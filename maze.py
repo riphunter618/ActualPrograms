@@ -3,8 +3,8 @@ import random
 import time
 
 pygame.init()
-width = 400
-height = 400
+width = 600
+height = 600
 screen = pygame.display.set_mode((width, height))
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -16,18 +16,12 @@ stack = []
 solution = {}
 
 
-def build_grid(y1, w1):
-    for i in range(1, 21):
-        x1 = 0
-        y1 = y1 + 20
-        for j in range(1, 21):
-            pygame.draw.line(screen, BLACK, [x1, y1], [x1 + w1, y1], 5)
-            pygame.draw.line(screen, BLACK, [x1 + w1, y1], [x1 + w1, y1 + w1], 5)
-            pygame.draw.line(screen, BLACK, [x1 + w1, y1 + w1], [x1, y1 + w1], 5)
-            pygame.draw.line(screen, BLACK, [x1, y1 + w1], [x1, y1], 5)
-            pygame.display.update()
-            grid.append((x1, y1))
-            x1 = x1 + 20
+def build_grid():
+    for i in range(width):
+        for j in range(height):
+            pygame.draw.rect(screen, BLACK, (i * 20, j * 20, 20, 20), 5)
+            grid.append((i, j))
+        pygame.display.update()
 
 
 def push_up(x, y):
@@ -61,7 +55,7 @@ def backtracking_cell(x, y):
 
 
 def solution_cell(x, y):
-    pygame.draw.rect(screen, BLUE, (x + 8, y + 8, 3, 3), 0)
+    pygame.draw.rect(screen, BLUE, (x + 8, y + 8, 5, 5), 0)
     pygame.display.update()
 
 
@@ -70,7 +64,6 @@ def carve(x, y):
     visited.append((x, y))
     stack.append((x, y))
     while len(stack) > 0:
-        time.sleep(0.07)
         cell = []
         if (x + w, y) not in visited and (x + w, y) in grid:
             cell.append('right')
@@ -109,7 +102,6 @@ def carve(x, y):
         else:
             x, y = stack.pop()
             single_cell(x, y)
-            time.sleep(0.05)
             backtracking_cell(x, y)
 
 
@@ -117,13 +109,13 @@ def plot(x, y):
     solution_cell(x, y)
     while (x, y) != (0, 0):
         x, y = solution[x, y]
-        solution_cell(x, y)
         time.sleep(0.1)
+        solution_cell(x, y)
 
 
-build_grid(-20, 20)
+build_grid()
 carve(0, 0)
-plot(350, 350)
+plot(width-20, height-20)
 run = True
 while run:
     for event in pygame.event.get():
