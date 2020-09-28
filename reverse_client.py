@@ -2,7 +2,7 @@ import socket
 import os
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('206.189.225.240', 8000))
+s.connect((socket.gethostname(), port))
 
 
 def file_transfer(filename):
